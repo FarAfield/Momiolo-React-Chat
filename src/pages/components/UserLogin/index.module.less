@@ -1,0 +1,106 @@
+.root {
+  width: 280px;
+  height: 400px;
+  background-color: rgba(245, 245, 245);
+  border-radius: 4px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  .text {
+    height: 36px;
+    width: 48px;
+    line-height: 36px;
+    text-align: center;
+    color: rgba(128, 128, 128, 0.7);
+    font-size: 14px;
+    cursor: default;
+  }
+  .setting {
+    display: flex;
+    > div {
+      height: 24px;
+      width: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      > span {
+        font-size: 10px;
+        color: gray;
+      }
+    }
+    > div:nth-of-type(1):hover {
+      background-color: rgba(128, 128, 128, 0.3);
+      cursor: pointer;
+    }
+    > div:nth-of-type(2):hover {
+      background-color: rgba(250, 81, 81);
+      cursor: pointer;
+      > span {
+        color: white;
+      }
+    }
+  }
+}
+.avatar {
+  display: flex;
+  justify-content: center;
+  margin-top: 62px;
+  :global {
+    .ant-avatar {
+      width: 92px;
+      height: 92px;
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+      }
+    }
+  }
+}
+.nickName {
+  margin-top: 28px;
+  text-align: center;
+  color: gray;
+}
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 18px 32px 0;
+  background-color: rgba(26, 173, 25);
+  color: white;
+  border-radius: 2px;
+  line-height: 40px;
+  height: 40px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.switch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  margin: 48px auto 0;
+  color: #185fb2;
+  cursor: pointer;
+}
+.tip {
+  margin-top: 28px;
+  text-align: center;
+  font-size: 20px;
+  color: rgba(38,219,111);
+}
+.qrCode {
+  margin: 20px 46px 0;
+}
+
+.settingChange {
+  margin-top: 28px;
+  text-align: center;
+  font-size: 20px;
+  color: rgba(38,219,111);
+}
+.settingSelect {
+  margin: 20px 80px 0;
+}
