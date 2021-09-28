@@ -34,7 +34,7 @@ export const transformResponse = (
 
 export const useResource = (
   service: any,
-  { params = {}, desp = [], defaultData = null, formatResult }: any
+  { params = {}, desp = [], defaultData = null, formatResult }: any = {}
 ) => {
   const [data, setData] = useState(defaultData);
   const [loading, setLoading] = useState(false);

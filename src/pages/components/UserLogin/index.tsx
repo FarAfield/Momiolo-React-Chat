@@ -6,18 +6,21 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import QRCode from "qrcode.react";
+import { useResource, createService } from '@/utils/requestUtils';
 import { UserInfoList } from "@/utils/constant";
 import styles from "./index.module.less";
 
+const userList = createService('/user/userList');
 const UserLogin = ({
   userInfo,
   setUserInfo,
   setIsSign,
   setGlobalStatus,
 }: any) => {
-  const [isScanCode, setIsScanCode] = useState(false); // 是否扫码
+  const [isScanCode, setIsScanCode] = useState(false); // 是否已扫码
   const [isSetting, setIsSetting] = useState(false); // 是否处于设置状态
   const [openId, setOpenId] = useState<any>(undefined); // openId
+  const { data: userInfoList } = useResource(userList,{ defaultData: UserInfoList });
 
   useEffect(() => {
     // 用户信息存在，初始时设置为已扫码
@@ -39,7 +42,7 @@ const UserLogin = ({
   function scanCodeSuccess() {
     if (openId) {
       setIsScanCode(true);
-      setUserInfo(UserInfoList.find((i: any) => i.openId === openId) || {});
+      setUserInfo(userInfoList.find((i: any) => i.openId === openId) || {});
     }
   }
   /** 最小化 */
@@ -51,7 +54,7 @@ const UserLogin = ({
     setIsSetting(!isSetting);
     // 若已扫码且openId存在，直接更新用户信息
     if (isScanCode && openId) {
-      setUserInfo(UserInfoList.find((i: any) => i.openId === openId) || {});
+      setUserInfo(userInfoList.find((i: any) => i.openId === openId) || {});
     }
   }
   return (
@@ -132,7 +135,7 @@ const Setting = ({ openId, setOpenId }: any) => {
         >
           <Space direction="vertical">
             {UserInfoList.map((item: any) => (
-              <Radio key={item.openId} value={item.openId}>
+              <Radio key={item.openId} value={item.openId} disabled={item.online}>
                 {item.nickName}
               </Radio>
             ))}
