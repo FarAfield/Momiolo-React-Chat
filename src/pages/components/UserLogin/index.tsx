@@ -6,11 +6,11 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import QRCode from "qrcode.react";
-import { useResource, createService } from '@/utils/requestUtils';
+import { useResource, createService } from "@/utils/requestUtils";
 import { UserInfoList } from "@/utils/constant";
 import styles from "./index.module.less";
 
-const userList = createService('/user/userList');
+const userList = createService("/user/userList");
 const UserLogin = ({
   userInfo,
   setUserInfo,
@@ -20,7 +20,7 @@ const UserLogin = ({
   const [isScanCode, setIsScanCode] = useState(false); // 是否已扫码
   const [isSetting, setIsSetting] = useState(false); // 是否处于设置状态
   const [openId, setOpenId] = useState<any>(undefined); // openId
-  const { data: userInfoList } = useResource(userList,{ defaultData: UserInfoList });
+  const { data: userInfoList } = useResource(userList, { defaultData: UserInfoList });
 
   useEffect(() => {
     // 用户信息存在，初始时设置为已扫码
@@ -74,7 +74,13 @@ const UserLogin = ({
           </div>
         </div>
       </div>
-      {isSetting && <Setting openId={openId} setOpenId={setOpenId} />}
+      {isSetting && (
+        <Setting
+          openId={openId}
+          setOpenId={setOpenId}
+          userInfoList={userInfoList}
+        />
+      )}
       {!isSetting && (
         <>
           {isScanCode && (
@@ -124,7 +130,7 @@ const Code = ({ scanCodeSuccess }: any) => {
     </>
   );
 };
-const Setting = ({ openId, setOpenId }: any) => {
+const Setting = ({ openId, setOpenId, userInfoList }: any) => {
   return (
     <>
       <div className={styles.settingChange}>选择账号</div>
@@ -134,8 +140,12 @@ const Setting = ({ openId, setOpenId }: any) => {
           value={openId}
         >
           <Space direction="vertical">
-            {UserInfoList.map((item: any) => (
-              <Radio key={item.openId} value={item.openId} disabled={item.online}>
+            {userInfoList.map((item: any) => (
+              <Radio
+                key={item.openId}
+                value={item.openId}
+                disabled={item.online}
+              >
                 {item.nickName}
               </Radio>
             ))}
