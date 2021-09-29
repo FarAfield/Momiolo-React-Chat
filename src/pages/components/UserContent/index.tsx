@@ -8,7 +8,7 @@ import styles from "./index.module.less";
 
 const chatList = createService("/user/chatList");
 const UserContent = (props: any) => {
-  const { userInfo } = props;
+  const { userInfo, setIsSign } = props;
   const { data: userChatList } = useResource(chatList, {
     params: { openId: userInfo.openId },
     defaultData: UserInfoList,
@@ -23,7 +23,7 @@ const UserContent = (props: any) => {
         setActiveKey={setActiveKey}
       />
       <UserCenterLayout userChatList={userChatList} />
-      <UserRightLayout />
+      <UserRightLayout setIsSign={setIsSign}/>
     </div>
   );
 };

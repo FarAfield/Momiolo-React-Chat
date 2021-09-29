@@ -20,12 +20,15 @@ const UserLogin = ({
   const [isScanCode, setIsScanCode] = useState(false); // 是否已扫码
   const [isSetting, setIsSetting] = useState(false); // 是否处于设置状态
   const [openId, setOpenId] = useState<any>(undefined); // openId
-  const { data: userInfoList } = useResource(userList, { defaultData: UserInfoList });
+  const { data: userInfoList } = useResource(userList, {
+    defaultData: UserInfoList,
+  });
 
   useEffect(() => {
     // 用户信息存在，初始时设置为已扫码
     if (Object.keys(userInfo).length) {
       setIsScanCode(true);
+      setOpenId(userInfo.openId);
     }
   }, []);
 
@@ -63,14 +66,10 @@ const UserLogin = ({
         <div className={styles.text}>微信</div>
         <div className={styles.setting}>
           <div onClick={switchSetting}>
-            {isSetting ? (
-              <UserOutlined className={styles.icon} />
-            ) : (
-              <SettingOutlined className={styles.icon} />
-            )}
+            {isSetting ? <UserOutlined /> : <SettingOutlined />}
           </div>
           <div onClick={close}>
-            <CloseOutlined className={styles.icon} />
+            <CloseOutlined />
           </div>
         </div>
       </div>

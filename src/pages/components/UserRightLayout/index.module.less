@@ -1,5 +1,57 @@
 .root {
   flex: 1;
   background-color: rgb(245, 245, 245);
-  border-left: 1px solid rgb(226,226,226);
+  border-left: 1px solid rgb(226, 226, 226);
+  display: flex;
+  flex-direction: column;
+}
+.header {
+  padding: 18px 0 6px;
+  height: 32px;
+  border-bottom: 1px solid rgb(226, 226, 226);
+  display: flex;
+  flex-direction: column;
+  .option {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -18px;
+    > div {
+      height: 24px;
+      width: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      > span {
+        font-size: 10px;
+        color: gray;
+      }
+    }
+    > div:nth-of-type(-n + 4):hover {
+      background-color: rgba(229, 229, 229);
+    }
+    > div:nth-of-type(4):hover {
+      background-color: rgba(250, 81, 81);
+      > span {
+        color: white;
+      }
+    }
+  }
+  .link {
+    display: flex;
+    justify-content: space-between;
+    div:nth-of-type(1) {
+      margin-left: 30px;
+      font-size: 18px;
+      margin-top: -6px;
+    }
+    div:nth-of-type(2) {
+      margin-right: 8px;
+      margin-top: 4px;
+      > span {
+        font-size: 24px;
+        color: gray;
+      }
+    }
+  }
 }
