@@ -18,7 +18,11 @@ const UserLeftLayout = (props: any) => {
           <img src={avatarUrl} alt="" />
         </div>
         {TOP.map((item: any) => (
-          <div className={styles.icon} onClick={() => setActiveKey(item.key)}>
+          <div
+            key={item.key}
+            className={styles.icon}
+            onClick={() => setActiveKey(item.key)}
+          >
             <Icon
               type={item.icon}
               fontSize={20}

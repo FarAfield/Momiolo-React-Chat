@@ -1,44 +1,75 @@
-import { useState, useEffect, useRef } from "react";
-import Draggable from "react-draggable";
+import { useState, useEffect } from "react";
+import { Rnd } from "react-rnd";
 import styles from "./index.module.less";
 
-const DraggableBox = ({ children }: any) => {
-  // 计算children的宽高
-  const childrenRef = useRef<any>(null);
-  // 计算position
+const DraggableBox = ({
+  children,
+  width,
+  height,
+  enableResizing = true,
+  disableDragging = false,
+  minWidth,
+  minHeight,
+  ...rest
+}: any) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [size, setSize] = useState({
+    width: minWidth || width,
+    height: minHeight || height,
+  });
+
+  // 初始化设置position
   useEffect(() => {
     setPosition({
-      x: -childrenRef.current?.offsetWidth / 2 || 0,
-      y: -childrenRef.current?.offsetHeight / 2 || 0,
+      x: (document.body.clientWidth - size.width) / 2,
+      y: (document.body.clientHeight - size.height) / 2,
     });
   }, []);
 
-  function handleStart() {}
-  function handleDrag(e: any, data: any) {
+  function handleDragStop(e: any, data: any) {
     setPosition({
       x: data.x,
       y: data.y,
     });
   }
-  function handleStop() {}
+  function handleResize(
+    e: any,
+    direction: any,
+    ref: any,
+    delta: any,
+    position: any
+  ) {
+    setPosition({
+      x: position.x,
+      y: position.y,
+    });
+    setSize({
+      width: ref.offsetWidth,
+      height: ref.offsetHeight,
+    });
+  }
   return (
-    <Draggable
-      defaultClassName={styles["react-draggable"]}
-      axis="both" // 允许任意方向
+    <Rnd
+      className={styles.rnd}
+      resizeHandleWrapperClass={
+        enableResizing ? styles["rnd-resize"] : styles["rnd-resize-disabled"]
+      }
+      dragAxis="both" // 允许任意方向
       bounds="parent" // 指定边界
-      handle=".handle"
       position={position}
-      grid={[3, 3]} //  指定捕获范围（越小越流畅）
-      scale={1}
-      onStart={handleStart}
-      onDrag={handleDrag}
-      onStop={handleStop}
+      size={size}
+      onDragStop={handleDragStop}
+      onResize={handleResize}
+      enableResizing={enableResizing}
+      disableDragging={disableDragging}
+      minWidth={minWidth}
+      minHeight={minHeight}
+      maxWidth={document.body.clientWidth}
+      maxHeight={document.body.clientHeight}
+      {...rest}
     >
-      <div ref={childrenRef} className="handle">
-        {children}
-      </div>
-    </Draggable>
+      <div className={styles.children}>{children}</div>
+    </Rnd>
   );
 };
 export default DraggableBox;

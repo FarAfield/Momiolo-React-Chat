@@ -20,7 +20,7 @@ function App() {
       )}
       {/** 开启状态且处于未登录 */}
       {globalStatus && !isSign && (
-        <DraggableBox>
+        <DraggableBox enableResizing={false} width={280} height={400}>
           <UserLogin
             userInfo={userInfo}
             setUserInfo={setUserInfo}
@@ -31,7 +31,7 @@ function App() {
       )}
       {/** 开启状态且处于已登录 */}
       {globalStatus && isSign && (
-        <DraggableBox>
+        <DraggableBox minWidth={700} minHeight={500}>
           <UserContent userInfo={userInfo} setIsSign={setIsSign} />
         </DraggableBox>
       )}
