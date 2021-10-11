@@ -1,11 +1,16 @@
-import Icon from "@/components/Icon";
+import {
+  MessageOutlined,
+  UserOutlined,
+  HeartOutlined,
+  FolderOutlined,
+} from "@ant-design/icons";
 import styles from "./index.module.less";
 
 const TOP = [
-  { key: "message", icon: "icon-xiaoxi" },
-  { key: "contacts", icon: "icon-lianxiren" },
-  { key: "collection", icon: "icon-shoucang" },
-  { key: "file", icon: "icon-wenjian" },
+  { key: "message", render: (p: any) => <MessageOutlined {...p} /> },
+  { key: "contacts", render: (p: any) => <UserOutlined {...p} /> },
+  { key: "collection", render: (p: any) => <HeartOutlined {...p} /> },
+  { key: "file", render: (p: any) => <FolderOutlined {...p} /> },
 ];
 const UserLeftLayout = (props: any) => {
   const { userInfo, activeKey, setActiveKey } = props;
@@ -23,11 +28,12 @@ const UserLeftLayout = (props: any) => {
             className={styles.icon}
             onClick={() => setActiveKey(item.key)}
           >
-            <Icon
-              type={item.icon}
-              fontSize={20}
-              color={activeKey === item.key ? "rgba(26,173,25)" : "gray"}
-            />
+            {item.render({
+              style: {
+                color: activeKey === item.key ? "rgba(26,173,25)" : "gray",
+                fontSize: 18,
+              },
+            })}
           </div>
         ))}
       </div>

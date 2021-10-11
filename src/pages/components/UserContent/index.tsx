@@ -23,7 +23,7 @@ const UserContent = (props: any) => {
         setActiveKey={setActiveKey}
       />
       <UserCenterLayout userChatList={userChatList} />
-      <UserRightLayout setIsSign={setIsSign}/>
+      <UserRightLayout setIsSign={setIsSign} />
     </div>
   );
 };

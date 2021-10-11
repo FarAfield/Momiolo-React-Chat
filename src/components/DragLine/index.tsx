@@ -64,6 +64,7 @@ function initDrag(
   const lineHeight = lineDom.offsetHeight;
   lineDom.onmousedown = (l: any) => {
     let e = l;
+    e.stopPropagation(); // 阻止事件传递到父组件
     // 获取初始点击位置
     const initX = e.clientX;
     const initY = e.clientY;
@@ -92,9 +93,10 @@ function initDrag(
       }
     };
     // 松开鼠标，解绑事件
-    lineDom.onmouseup = () => {
+    lineDom.onmouseup = (o: any) => {
+      o.stopPropagation(); // 阻止事件传递到父组件
+      e = null;
       document.onmousemove = null;
     };
-    return false;
   };
 }

@@ -1,5 +1,5 @@
 // 在 iconfont.cn 上生成
-const scriptUrl = "//at.alicdn.com/t/font_2840362_0fv9yaes2oc6.js";
+const scriptUrl = "//at.alicdn.com/t/font_2840362_hmuzux6098q.js";
 
 const scriptElement = document.createElement("script");
 scriptElement.src = scriptUrl;

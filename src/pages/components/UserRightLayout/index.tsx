@@ -5,6 +5,9 @@ import {
   PushpinOutlined,
   EllipsisOutlined,
 } from "@ant-design/icons";
+import DragLine from "@/components/DragLine";
+import Content from "./Content";
+import Operation from "./Operation";
 
 import styles from "./index.module.less";
 const UserRightLayout = (props: any) => {
@@ -32,6 +35,19 @@ const UserRightLayout = (props: any) => {
             <EllipsisOutlined />
           </div>
         </div>
+      </div>
+      <div className={styles.body}>
+        <DragLine direction="horizontal">
+          <div className={styles.content}>
+            <div className={styles.top}>
+              <Content />
+            </div>
+            <div className={styles.line} />
+            <div className={styles.bottom}>
+              <Operation />
+            </div>
+          </div>
+        </DragLine>
       </div>
     </div>
   );
