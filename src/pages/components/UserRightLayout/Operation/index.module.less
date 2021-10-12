@@ -1,4 +1,66 @@
 .root {
   height: 100%;
   width: 100%;
+  padding: 12px 18px 6px 18px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  .operation {
+    display: flex;
+    justify-content: space-between;
+    .iconGroup {
+      > span {
+        margin: 0 6px;
+        cursor: pointer;
+      }
+    }
+  }
+  .textArea {
+    flex: 1;
+    margin: 12px 0;
+    > textarea {
+      border: none !important;
+      font-size: 16px;
+      font-family: inherit;
+      color: rgba(0, 0, 0);
+      width: 100%;
+      height: 100%;
+      resize: none;
+    }
+    > textarea:focus-visible {
+      outline: none !important;
+    }
+    ::-webkit-scrollbar {
+      width: 6px !important;
+      height: 2px !important;
+      background: transparent !important;
+      cursor: pointer !important;
+    }
+    ::-webkit-scrollbar-thumb {
+      border-radius: 5px !important;
+      background: rgba(192, 189, 187) !important;
+      cursor: pointer !important;
+    }
+    ::-webkit-scrollbar-track {
+      border-radius: 0 !important;
+      background: transparent !important;
+      cursor: pointer !important;
+    }
+  }
+  .enter {
+    display: flex;
+    justify-content: flex-end;
+    .enterButton {
+      background-color: rgba(245, 245, 245);
+      display: inline-block;
+      padding: 3px 8px;
+      font-size: 14px;
+      color: rgb(96, 96, 96);
+      &:hover {
+        background-color: rgba(18, 150, 17);
+        color: white;
+        cursor: pointer;
+      }
+    }
+  }
 }

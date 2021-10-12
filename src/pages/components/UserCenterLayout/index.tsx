@@ -16,7 +16,32 @@ const UserCenterLayout = (props: any) => {
   return (
     <div className={styles.root}>
       <div className={styles.search}>
-        <Input />
+        <div
+          className={styles.input}
+          style={
+            isFocus
+              ? { border: "1px solid rgb(220,219,218)", borderRadius: 4 }
+              : {}
+          }
+        >
+          <div
+            className={styles.icon}
+            style={{
+              backgroundColor: isFocus
+                ? "rgb(248,248,248)"
+                : "rgb(226, 226, 226)",
+            }}
+          >
+            <SearchOutlined
+              style={{ fontSize: 12, color: "rgb(100,100,100)" }}
+            />
+          </div>
+          <Input
+            onFocus={() => setIsFocus(true)}
+            onBlur={() => setIsFocus(false)}
+            placeholder={isFocus ? "" : "搜索"}
+          />
+        </div>
         <Button>
           <PlusOutlined style={{ color: "rgb(100,100,100)" }} />
         </Button>
