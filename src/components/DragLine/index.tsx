@@ -73,6 +73,7 @@ function initDrag(
     const initHeight = lastDom.offsetHeight;
     document.onmousemove = (d: any) => {
       e = d;
+      e.stopPropagation(); // 阻止事件传递到父组件
       switch (direction) {
         case "vertical": {
           firstDom.style.width = `${

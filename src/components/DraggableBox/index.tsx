@@ -93,8 +93,8 @@ const DraggableBox = ({
       disableDragging={disableDragging}
       minWidth={minWidth}
       minHeight={minHeight}
-      maxWidth={document.body.clientWidth}
-      maxHeight={document.body.clientHeight}
+      maxWidth={MaxWidth}
+      maxHeight={MaxHeight}
       {...rest}
     >
       <div className={styles.children}>{children}</div>

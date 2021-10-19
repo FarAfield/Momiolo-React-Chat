@@ -7,7 +7,6 @@ import {
   SelectOutlined,
 } from "@ant-design/icons";
 import { connect } from "dva";
-import { useMessageReducer } from "../reducer";
 import DragLine from "../../../../../components/DragLine";
 import Content from "./Content";
 import Operation from "./Operation";
@@ -71,28 +70,31 @@ export default connect(({ global }: any) => ({ global }))(RightLayout);
 /**
  *  消息发送区
  */
-const MessageSend = () => {
-  return (
-    <>
-      <div className={styles.link}>
-        <div>新消息</div>
-        <div>
-          <EllipsisOutlined />
-        </div>
-      </div>
-      <div className={styles.body}>
-        <DragLine direction="horizontal">
-          <div className={styles.content}>
-            <div className={styles.top}>
-              <Content />
-            </div>
-            <div className={styles.line} />
-            <div className={styles.bottom}>
-              <Operation />
-            </div>
+const MessageSend = connect(({ relation }: any) => ({ relation }))(
+  ({ relation }: any) => {
+    const { currentMessage } = relation;
+    return (
+      <>
+        <div className={styles.link}>
+          <div>{currentMessage.nickName}</div>
+          <div>
+            <EllipsisOutlined />
           </div>
-        </DragLine>
-      </div>
-    </>
-  );
-};
+        </div>
+        <div className={styles.body}>
+          <DragLine direction="horizontal">
+            <div className={styles.content}>
+              <div className={styles.top}>
+                <Content />
+              </div>
+              <div className={styles.line} />
+              <div className={styles.bottom}>
+                <Operation />
+              </div>
+            </div>
+          </DragLine>
+        </div>
+      </>
+    );
+  }
+);

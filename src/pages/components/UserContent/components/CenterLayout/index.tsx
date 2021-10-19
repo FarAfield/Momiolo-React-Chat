@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { connect } from "dva";
-import { useMessageReducer } from "../reducer";
 import { useResource, createService } from "@/utils/requestUtils";
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import { Input, Button } from "antd";
@@ -45,7 +44,7 @@ const CenterLayout = (props: any) => {
           <PlusOutlined style={{ color: "rgb(100,100,100)" }} />
         </Button>
       </div>
-      <MessageList {...props} />
+      <MessageList />
     </div>
   );
 };
@@ -54,16 +53,31 @@ export default connect(({ global }: any) => ({ global }))(CenterLayout);
 /**
  *  消息列表
  */
-const messageList = createService("/socket/findMessageList");
-const MessageList = ({ global }: any) => {
+const messageList = createService("/socket/findUserList");
+const MessageList = connect(({ global, relation }: any) => ({
+  global,
+  relation,
+}))(({ global, relation, dispatch }: any) => {
   const {
     userInfo: { openId },
   } = global;
+  const { userMessageList, currentMessage } = relation;
   const { data } = useResource(messageList, {
     params: { openId },
     defaultData: [],
   });
-  const { userMessageList, record, setRecord } = useMessageReducer(data);
+  useEffect(() => {
+    dispatch({
+      type: "relation/update",
+      userMessageList: data,
+    });
+  }, [data]);
+  function updateCurrentMessage(v: any) {
+    dispatch({
+      type: "relation/update",
+      currentMessage: v,
+    });
+  }
   const { list, containerProps, wrapperProps } = useVirtualList(
     userMessageList,
     {
@@ -83,9 +97,9 @@ const MessageList = ({ global }: any) => {
             key={index}
             style={{
               backgroundColor:
-                data.openId === record.openId ? "rgb(196,196,197)" : "",
+                data.openId === currentMessage.openId ? "rgb(196,196,197)" : "",
             }}
-            onClick={() => setRecord(data)}
+            onClick={() => updateCurrentMessage(data)}
           >
             <div className={styles.avatar}>
               <img src={data.avatarUrl} alt="" />
@@ -100,4 +114,4 @@ const MessageList = ({ global }: any) => {
       </div>
     </div>
   );
-};
+});
