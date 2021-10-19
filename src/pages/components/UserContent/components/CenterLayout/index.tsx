@@ -7,7 +7,10 @@ import { Input, Button } from "antd";
 import { useVirtualList } from "ahooks";
 import styles from "./index.module.less";
 
-const CenterLayout = () => {
+const CenterLayout = (props: any) => {
+  const {
+    global: { activeKey },
+  } = props;
   const [isFocus, setIsFocus] = useState(false);
   return (
     <div className={styles.root}>
@@ -42,61 +45,59 @@ const CenterLayout = () => {
           <PlusOutlined style={{ color: "rgb(100,100,100)" }} />
         </Button>
       </div>
-      <MessageList />
+      <MessageList {...props} />
     </div>
   );
 };
-export default CenterLayout;
+export default connect(({ global }: any) => ({ global }))(CenterLayout);
 
 /**
  *  消息列表
  */
 const messageList = createService("/socket/findMessageList");
-const MessageList = connect(({ global }: any) => ({ global }))(
-  ({ global }: any) => {
-    const {
-      userInfo: { openId },
-    } = global;
-    const { data } = useResource(messageList, {
-      params: { openId },
-      defaultData: [],
-    });
-    const { userMessageList, record, setRecord } = useMessageReducer(data);
-    const { list, containerProps, wrapperProps } = useVirtualList(
-      userMessageList,
-      {
-        overscan: 10,
-        itemHeight: 60,
-      }
-    );
-    return (
-      <div
-        {...containerProps}
-        style={{ height: "calc(100% - 56px)", overflow: "overlay" }}
-      >
-        <div {...wrapperProps}>
-          {list.map(({ index, data }) => (
-            <div
-              className={styles.messageListItem}
-              key={index}
-              style={{
-                backgroundColor:
-                  data.openId === record.openId ? "rgb(196,196,197)" : "",
-              }}
-              onClick={() => setRecord(data)}
-            >
-              <div className={styles.avatar}>
-                <img src={data.avatarUrl} alt="" />
-              </div>
-              <div className={styles.message}>
-                <div>{data.nickName}</div>
-                <div>{data.lastMessage}</div>
-              </div>
-              <div className={styles.date}>{data.lastDate}</div>
+const MessageList = ({ global }: any) => {
+  const {
+    userInfo: { openId },
+  } = global;
+  const { data } = useResource(messageList, {
+    params: { openId },
+    defaultData: [],
+  });
+  const { userMessageList, record, setRecord } = useMessageReducer(data);
+  const { list, containerProps, wrapperProps } = useVirtualList(
+    userMessageList,
+    {
+      overscan: 10,
+      itemHeight: 60,
+    }
+  );
+  return (
+    <div
+      {...containerProps}
+      style={{ height: "calc(100% - 56px)", overflow: "overlay" }}
+    >
+      <div {...wrapperProps}>
+        {list.map(({ index, data }) => (
+          <div
+            className={styles.messageListItem}
+            key={index}
+            style={{
+              backgroundColor:
+                data.openId === record.openId ? "rgb(196,196,197)" : "",
+            }}
+            onClick={() => setRecord(data)}
+          >
+            <div className={styles.avatar}>
+              <img src={data.avatarUrl} alt="" />
             </div>
-          ))}
-        </div>
+            <div className={styles.message}>
+              <div>{data.nickName}</div>
+              <div>{data.lastMessage}</div>
+            </div>
+            <div className={styles.date}>{data.lastDate}</div>
+          </div>
+        ))}
       </div>
-    );
-  }
-);
+    </div>
+  );
+};

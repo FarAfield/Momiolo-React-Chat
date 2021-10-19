@@ -5,6 +5,8 @@ export default {
     userInfo: {}, // 用户信息
     login: false, // 是否登录
     activeKey: "message", // 当前功能项
+    fixed: false, // 固定化
+    maximize: false, // 最大化
   },
   effects: {},
   reducers: {

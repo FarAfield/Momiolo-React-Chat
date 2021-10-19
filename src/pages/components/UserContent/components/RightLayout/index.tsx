@@ -4,15 +4,17 @@ import {
   BorderOutlined,
   PushpinOutlined,
   EllipsisOutlined,
+  SelectOutlined,
 } from "@ant-design/icons";
 import { connect } from "dva";
+import { useMessageReducer } from "../reducer";
 import DragLine from "../../../../../components/DragLine";
 import Content from "./Content";
 import Operation from "./Operation";
 import styles from "./index.module.less";
 const RightLayout = (props: any) => {
   const {
-    global: { activeKey },
+    global: { activeKey, maximize, fixed },
     dispatch,
   } = props;
   function close() {
@@ -27,18 +29,33 @@ const RightLayout = (props: any) => {
       minimize: true,
     });
   }
+  function toggleMaximize() {
+    dispatch({
+      type: "global/update",
+      maximize: !maximize,
+    });
+  }
+  function toggleFixed() {
+    dispatch({
+      type: "global/update",
+      fixed: !fixed,
+    });
+  }
   return (
     <div className={styles.root}>
       <div className={styles.header}>
         <div className={styles.option}>
-          <div onClick={() => {}}>
+          <div
+            onClick={() => toggleFixed()}
+            style={fixed ? { backgroundColor: "rgb(233,233,233)" } : {}}
+          >
             <PushpinOutlined rotate={-45} />
           </div>
           <div onClick={minimize}>
             <MinusOutlined />
           </div>
-          <div onClick={() => {}}>
-            <BorderOutlined />
+          <div onClick={() => toggleMaximize()}>
+            {maximize ? <SelectOutlined rotate={-90} /> : <BorderOutlined />}
           </div>
           <div onClick={close}>
             <CloseOutlined />

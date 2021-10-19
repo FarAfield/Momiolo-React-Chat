@@ -10,7 +10,7 @@ function show(status = false) {
 }
 function App(props: any) {
   const {
-    global: { minimize, userInfo, login },
+    global: { minimize, login, fixed, maximize },
     dispatch,
   } = props;
 
@@ -44,7 +44,14 @@ function App(props: any) {
       )}
       {/** 登陆状态 */}
       {login && (
-        <DraggableBox minWidth={700} minHeight={500} {...show(!minimize)}>
+        <DraggableBox
+          minWidth={700}
+          minHeight={500}
+          {...show(!minimize)}
+          enableResizing={!fixed}
+          disableDragging={fixed}
+          maximize={maximize}
+        >
           <UserContent />
         </DraggableBox>
       )}
