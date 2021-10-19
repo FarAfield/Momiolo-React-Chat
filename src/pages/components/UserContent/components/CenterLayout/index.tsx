@@ -1,18 +1,14 @@
 import { useState } from "react";
+import { connect } from "dva";
+import { useMessageReducer } from "../reducer";
+import { useResource, createService } from "@/utils/requestUtils";
 import { PlusOutlined, SearchOutlined } from "@ant-design/icons";
 import { Input, Button } from "antd";
 import { useVirtualList } from "ahooks";
 import styles from "./index.module.less";
 
-const UserCenterLayout = (props: any) => {
-  const { userChatList } = props;
+const CenterLayout = () => {
   const [isFocus, setIsFocus] = useState(false);
-  const [contactList, setContactList] = useState(userChatList);
-  const [current, setCurrent] = useState<any>({});
-  const { list, containerProps, wrapperProps } = useVirtualList(contactList, {
-    overscan: 10,
-    itemHeight: 60,
-  });
   return (
     <div className={styles.root}>
       <div className={styles.search}>
@@ -46,6 +42,34 @@ const UserCenterLayout = (props: any) => {
           <PlusOutlined style={{ color: "rgb(100,100,100)" }} />
         </Button>
       </div>
+      <MessageList />
+    </div>
+  );
+};
+export default CenterLayout;
+
+/**
+ *  消息列表
+ */
+const messageList = createService("/socket/findMessageList");
+const MessageList = connect(({ global }: any) => ({ global }))(
+  ({ global }: any) => {
+    const {
+      userInfo: { openId },
+    } = global;
+    const { data } = useResource(messageList, {
+      params: { openId },
+      defaultData: [],
+    });
+    const { userMessageList, record, setRecord } = useMessageReducer(data);
+    const { list, containerProps, wrapperProps } = useVirtualList(
+      userMessageList,
+      {
+        overscan: 10,
+        itemHeight: 60,
+      }
+    );
+    return (
       <div
         {...containerProps}
         style={{ height: "calc(100% - 56px)", overflow: "overlay" }}
@@ -53,27 +77,26 @@ const UserCenterLayout = (props: any) => {
         <div {...wrapperProps}>
           {list.map(({ index, data }) => (
             <div
-              className={styles.listItem}
+              className={styles.messageListItem}
               key={index}
               style={{
                 backgroundColor:
-                  data.openId === current.openId ? "rgb(196,196,197)" : "",
+                  data.openId === record.openId ? "rgb(196,196,197)" : "",
               }}
-              onClick={() => setCurrent(data)}
+              onClick={() => setRecord(data)}
             >
               <div className={styles.avatar}>
                 <img src={data.avatarUrl} alt="" />
               </div>
-              <div className={styles.center}>
+              <div className={styles.message}>
                 <div>{data.nickName}</div>
-                <div>{"这是一段文字这是一段文字这是一段文字这是一段文字"}</div>
+                <div>{data.lastMessage}</div>
               </div>
-              <div className={styles.time}>{"16:31"}</div>
+              <div className={styles.date}>{data.lastDate}</div>
             </div>
           ))}
         </div>
       </div>
-    </div>
-  );
-};
-export default UserCenterLayout;
+    );
+  }
+);

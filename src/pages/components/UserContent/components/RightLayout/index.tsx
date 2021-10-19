@@ -5,13 +5,28 @@ import {
   PushpinOutlined,
   EllipsisOutlined,
 } from "@ant-design/icons";
-import DragLine from "@/components/DragLine";
+import { connect } from "dva";
+import DragLine from "../../../../../components/DragLine";
 import Content from "./Content";
 import Operation from "./Operation";
-
 import styles from "./index.module.less";
-const UserRightLayout = (props: any) => {
-  const { setIsSign } = props;
+const RightLayout = (props: any) => {
+  const {
+    global: { activeKey },
+    dispatch,
+  } = props;
+  function close() {
+    dispatch({
+      type: "global/update",
+      login: false,
+    });
+  }
+  function minimize() {
+    dispatch({
+      type: "global/update",
+      minimize: true,
+    });
+  }
   return (
     <div className={styles.root}>
       <div className={styles.header}>
@@ -19,21 +34,33 @@ const UserRightLayout = (props: any) => {
           <div onClick={() => {}}>
             <PushpinOutlined rotate={-45} />
           </div>
-          <div onClick={() => {}}>
+          <div onClick={minimize}>
             <MinusOutlined />
           </div>
           <div onClick={() => {}}>
             <BorderOutlined />
           </div>
-          <div onClick={() => setIsSign(false)}>
+          <div onClick={close}>
             <CloseOutlined />
           </div>
         </div>
-        <div className={styles.link}>
-          <div>新消息</div>
-          <div>
-            <EllipsisOutlined />
-          </div>
+      </div>
+      <MessageSend />
+    </div>
+  );
+};
+export default connect(({ global }: any) => ({ global }))(RightLayout);
+
+/**
+ *  消息发送区
+ */
+const MessageSend = () => {
+  return (
+    <>
+      <div className={styles.link}>
+        <div>新消息</div>
+        <div>
+          <EllipsisOutlined />
         </div>
       </div>
       <div className={styles.body}>
@@ -49,7 +76,6 @@ const UserRightLayout = (props: any) => {
           </div>
         </DragLine>
       </div>
-    </div>
+    </>
   );
 };
-export default UserRightLayout;

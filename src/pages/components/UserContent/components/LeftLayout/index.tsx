@@ -4,29 +4,38 @@ import {
   HeartOutlined,
   FolderOutlined,
 } from "@ant-design/icons";
+import { connect } from "dva";
 import styles from "./index.module.less";
 
-const TOP = [
+const OPTIONS = [
   { key: "message", render: (p: any) => <MessageOutlined {...p} /> },
   { key: "contacts", render: (p: any) => <UserOutlined {...p} /> },
   { key: "collection", render: (p: any) => <HeartOutlined {...p} /> },
   { key: "file", render: (p: any) => <FolderOutlined {...p} /> },
 ];
-const UserLeftLayout = (props: any) => {
-  const { userInfo, activeKey, setActiveKey } = props;
+const LeftLayout = (props: any) => {
+  const {
+    global: { userInfo, activeKey },
+    dispatch,
+  } = props;
   const { avatarUrl } = userInfo;
-
+  function onChange(v: string) {
+    dispatch({
+      type: "global/update",
+      activeKey: v,
+    });
+  }
   return (
     <div className={styles.root}>
       <div className={styles.top}>
         <div className={styles.avatar}>
           <img src={avatarUrl} alt="" />
         </div>
-        {TOP.map((item: any) => (
+        {OPTIONS.map((item: any) => (
           <div
             key={item.key}
             className={styles.icon}
-            onClick={() => setActiveKey(item.key)}
+            onClick={() => onChange(item.key)}
           >
             {item.render({
               style: {
@@ -40,4 +49,4 @@ const UserLeftLayout = (props: any) => {
     </div>
   );
 };
-export default UserLeftLayout;
+export default connect(({ global }: any) => ({ global }))(LeftLayout);

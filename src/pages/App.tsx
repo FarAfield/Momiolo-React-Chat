@@ -6,7 +6,7 @@ import wechat from "@/assets/wechat.svg";
 import styles from "./App.module.less";
 
 function show(status = false) {
-  return { style: { display: status ? "block" : "none" } };
+  return { style: { display: status ? "flex" : "none" } };
 }
 function App(props: any) {
   const {

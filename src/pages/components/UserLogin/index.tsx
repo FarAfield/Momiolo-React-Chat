@@ -33,7 +33,7 @@ const UserLogin = (props: any) => {
   function minimize() {
     dispatch({
       type: "global/update",
-      minimize: false,
+      minimize: true,
     });
   }
   /** 登陆 */
