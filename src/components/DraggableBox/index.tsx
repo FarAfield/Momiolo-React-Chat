@@ -37,8 +37,8 @@ const DraggableBox = ({
       sizeRef.current = size;
       positionRef.current = position;
       setSize({
-        width: document.body.clientWidth,
-        height: document.body.clientHeight,
+        width: MaxWidth,
+        height: MaxHeight,
       });
       setPosition({
         x: 0,
