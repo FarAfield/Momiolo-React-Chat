@@ -1,11 +1,10 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import dva from "dva";
 import App from "./pages/App";
+import global from "./models/global";
 import "./index.less";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+const app = dva();
+app.model(global);
+app.router(() => <App />);
+app.start("#root");

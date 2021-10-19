@@ -13,7 +13,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/chat": {
-        target: "https://www.momiolo.com/chat",
+        target: "http://localhost:8080",
         changeOrigin: true,
       },
     },

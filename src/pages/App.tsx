@@ -1,42 +1,54 @@
-import { useState } from "react";
+import { connect } from "dva";
 import DraggableBox from "@/components/DraggableBox";
 import UserLogin from "./components/UserLogin";
 import UserContent from "./components/UserContent";
 import wechat from "@/assets/wechat.svg";
 import styles from "./App.module.less";
 
-function App() {
-  const [globalStatus, setGlobalStatus] = useState(true); // 全局状态（false为未登录前关闭状态）
-  const [userInfo, setUserInfo] = useState({}); // 用户信息
-  const [isSign, setIsSign] = useState(false); // 是否登陆
+function show(status = false) {
+  return { style: { display: status ? "block" : "none" } };
+}
+function App(props: any) {
+  const {
+    global: { minimize, userInfo, login },
+    dispatch,
+  } = props;
+
+  function toggleStatus() {
+    dispatch({
+      type: "global/update",
+      minimize: !minimize,
+    });
+  }
 
   return (
     <div className={styles.app}>
-      {/** 关闭状态，展示小图标 */}
-      {!globalStatus && (
-        <div className={styles.wave} onClick={() => setGlobalStatus(true)}>
-          <img className={styles.waveImg} src={wechat} alt="" />
-        </div>
-      )}
-      {/** 开启状态且处于未登录 */}
-      {globalStatus && !isSign && (
-        <DraggableBox enableResizing={false} width={280} height={400}>
-          <UserLogin
-            userInfo={userInfo}
-            setUserInfo={setUserInfo}
-            setIsSign={setIsSign}
-            setGlobalStatus={setGlobalStatus}
-          />
+      {/** 最小化状态，展示小图标 */}
+      <div
+        className={styles.minimize}
+        onClick={() => toggleStatus()}
+        {...show(minimize)}
+      >
+        <img className={styles.minimizeImg} src={wechat} alt="" />
+      </div>
+      {/** 未登录状态 */}
+      {!login && (
+        <DraggableBox
+          enableResizing={false}
+          width={280}
+          height={400}
+          {...show(!minimize)}
+        >
+          <UserLogin />
         </DraggableBox>
       )}
-      {/** 开启状态且处于已登录 */}
-      {globalStatus && isSign && (
-        <DraggableBox minWidth={700} minHeight={500}>
-          <UserContent userInfo={userInfo} setIsSign={setIsSign} />
+      {/** 登陆状态 */}
+      {login && (
+        <DraggableBox minWidth={700} minHeight={500} {...show(!minimize)}>
+          <UserContent />
         </DraggableBox>
       )}
     </div>
   );
 }
-
-export default App;
+export default connect(({ global }: any) => ({ global }))(App);

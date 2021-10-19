@@ -5,60 +5,68 @@ import {
   CloseOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import { connect } from "dva";
 import QRCode from "qrcode.react";
 import { useResource, createService } from "@/utils/requestUtils";
-import { UserInfoList } from "@/utils/constant";
 import styles from "./index.module.less";
 
-const userList = createService("/user/userList");
-const UserLogin = ({
-  userInfo,
-  setUserInfo,
-  setIsSign,
-  setGlobalStatus,
-}: any) => {
+const userList = createService("/socket/findUserList");
+const UserLogin = (props: any) => {
+  const {
+    global: { userInfo },
+    dispatch,
+  } = props;
   const [isScanCode, setIsScanCode] = useState(false); // 是否已扫码
   const [isSetting, setIsSetting] = useState(false); // 是否处于设置状态
-  const [openId, setOpenId] = useState<any>(undefined); // openId
   const { data: userInfoList } = useResource(userList, {
-    defaultData: UserInfoList,
+    defaultData: [],
   });
 
   useEffect(() => {
     // 用户信息存在，初始时设置为已扫码
     if (Object.keys(userInfo).length) {
       setIsScanCode(true);
-      setOpenId(userInfo.openId);
     }
   }, []);
 
+  /** 最小化 */
+  function minimize() {
+    dispatch({
+      type: "global/update",
+      minimize: false,
+    });
+  }
   /** 登陆 */
   function login() {
-    setIsSign(true);
+    dispatch({
+      type: "global/update",
+      login: true,
+    });
   }
   /** 切换账号 */
   function switchAccount() {
     setIsScanCode(false);
-    setUserInfo({});
+    dispatch({
+      type: "global/update",
+      userInfo: {},
+    });
   }
   /** 扫码成功 */
   function scanCodeSuccess() {
-    if (openId) {
+    if (Object.keys(userInfo).length) {
       setIsScanCode(true);
-      setUserInfo(userInfoList.find((i: any) => i.openId === openId) || {});
     }
-  }
-  /** 最小化 */
-  function close() {
-    setGlobalStatus(false);
   }
   /** 切换设置 */
   function switchSetting() {
     setIsSetting(!isSetting);
-    // 若已扫码且openId存在，直接更新用户信息
-    if (isScanCode && openId) {
-      setUserInfo(userInfoList.find((i: any) => i.openId === openId) || {});
-    }
+  }
+  /** 选择用户 */
+  function selectUser(v: object) {
+    dispatch({
+      type: "global/update",
+      userInfo: v,
+    });
   }
   return (
     <div className={styles.root}>
@@ -68,16 +76,16 @@ const UserLogin = ({
           <div onClick={switchSetting}>
             {isSetting ? <UserOutlined /> : <SettingOutlined />}
           </div>
-          <div onClick={close}>
+          <div onClick={minimize}>
             <CloseOutlined />
           </div>
         </div>
       </div>
       {isSetting && (
         <Setting
-          openId={openId}
-          setOpenId={setOpenId}
           userInfoList={userInfoList}
+          userInfo={userInfo}
+          selectUser={selectUser}
         />
       )}
       {!isSetting && (
@@ -95,7 +103,7 @@ const UserLogin = ({
     </div>
   );
 };
-export default UserLogin;
+export default connect(({ global }: any) => ({ global }))(UserLogin);
 
 const Login = ({ userInfo, login, switchAccount }: any) => {
   const { nickName, avatarUrl } = userInfo;
@@ -129,14 +137,18 @@ const Code = ({ scanCodeSuccess }: any) => {
     </>
   );
 };
-const Setting = ({ openId, setOpenId, userInfoList }: any) => {
+const Setting = ({ userInfoList, userInfo, selectUser }: any) => {
   return (
     <>
       <div className={styles.settingChange}>选择账号</div>
       <div className={styles.settingSelect}>
         <Radio.Group
-          onChange={(e: any) => setOpenId(e.target.value)}
-          value={openId}
+          onChange={(e: any) =>
+            selectUser(
+              userInfoList.find((i: any) => i.openId === e.target.value)
+            )
+          }
+          value={userInfo.openId}
         >
           <Space direction="vertical">
             {userInfoList.map((item: any) => (
