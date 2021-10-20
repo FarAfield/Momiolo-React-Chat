@@ -96,8 +96,8 @@ const MessageList = connect(({ global, relation }: any) => ({
             className={styles.messageListItem}
             key={index}
             style={{
-              backgroundColor:
-                data.openId === currentMessage.openId ? "rgb(196,196,197)" : "",
+              background:
+                data.openId === currentMessage.openId ? "linear-gradient(to right bottom, rgb(200, 200, 200), rgb(198,198,198))" : "",
             }}
             onClick={() => updateCurrentMessage(data)}
           >

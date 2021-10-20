@@ -7,13 +7,18 @@ import {
   SelectOutlined,
 } from "@ant-design/icons";
 import { connect } from "dva";
+import wechatBackground from "@/assets/wechatBackground.svg";
 import DragLine from "../../../../../components/DragLine";
 import Content from "./Content";
 import Operation from "./Operation";
 import styles from "./index.module.less";
+function show(status = false) {
+  return { style: { display: status ? "flex" : "none" } };
+}
 const RightLayout = (props: any) => {
   const {
     global: { activeKey, maximize, fixed },
+    relation: { currentMessage },
     dispatch,
   } = props;
   function close() {
@@ -61,27 +66,40 @@ const RightLayout = (props: any) => {
           </div>
         </div>
       </div>
-      <MessageSend />
+      <Black isShow={!Object.keys(currentMessage).length} />
+      <MessageSend isShow={Object.keys(currentMessage).length} />
     </div>
   );
 };
-export default connect(({ global }: any) => ({ global }))(RightLayout);
+export default connect(({ global, relation }: any) => ({ global, relation }))(
+  RightLayout
+);
 
 /**
- *  消息发送区
+ *  空白页
+ */
+const Black = ({ isShow }: any) => {
+  return (
+    <div className={styles.black} {...show(isShow)}>
+      <img src={wechatBackground} alt="" />
+    </div>
+  );
+};
+/**
+ *  消息发送区   hidden设置当前组件隐藏
  */
 const MessageSend = connect(({ relation }: any) => ({ relation }))(
-  ({ relation }: any) => {
+  ({ relation, isShow }: any) => {
     const { currentMessage } = relation;
     return (
-      <>
+      <div className={styles.body} {...show(isShow)}>
         <div className={styles.link}>
           <div>{currentMessage.nickName}</div>
           <div>
             <EllipsisOutlined />
           </div>
         </div>
-        <div className={styles.body}>
+        <div className={styles.send}>
           <DragLine direction="horizontal">
             <div className={styles.content}>
               <div className={styles.top}>
@@ -94,7 +112,7 @@ const MessageSend = connect(({ relation }: any) => ({ relation }))(
             </div>
           </DragLine>
         </div>
-      </>
+      </div>
     );
   }
 );

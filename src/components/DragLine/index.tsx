@@ -7,10 +7,11 @@ import styles from "./index.module.less";
  * @param children   必须保证children是三层结构 <div>[<div/>,<div/>,<div/>]</div>
  * @param direction
  * @constructor
+ * 会保证最小24px不可拖拽
  */
-
+const minSpacing = 24;
 const DragLine = ({ children, direction = "vertical" }: any) => {
-  const parentRef = useRef(null);
+  const parentRef = useRef<any>(null);
   const firstDomRef = useRef(null);
   const lineDomRef = useRef(null);
   const lastDomRef = useRef(null);
@@ -76,17 +77,44 @@ function initDrag(
       e.stopPropagation(); // 阻止事件传递到父组件
       switch (direction) {
         case "vertical": {
-          firstDom.style.width = `${
-            parent.offsetWidth - lineWidth - initWidth + (e.clientX - initX)
-          }px`;
-          lastDom.style.width = `${initWidth - (e.clientX - initX)}px`;
+          let firstWidth = Number(
+            `${
+              parent.offsetWidth - lineWidth - initWidth + (e.clientX - initX)
+            }`
+          );
+          let lastWidth = Number(`${initWidth - (e.clientX - initX)}`);
+          if (firstWidth < minSpacing) {
+            firstWidth = minSpacing;
+            lastWidth = parent.offsetWidth - lineWidth - minSpacing;
+          }
+          if (lastWidth < minSpacing) {
+            firstWidth = parent.offsetWidth - lineWidth - minSpacing;
+            lastWidth = minSpacing;
+          }
+          firstDom.style.width = `${firstWidth}px`;
+          lastDom.style.width = `${lastWidth}px`;
           break;
         }
         case "horizontal": {
-          firstDom.style.height = `${
-            parent.offsetHeight - lineHeight - initHeight + (e.clientY - initY)
-          }px`;
-          lastDom.style.height = `${initHeight - (e.clientY - initY)}px`;
+          let firstHeight = Number(
+            `${
+              parent.offsetHeight -
+              lineHeight -
+              initHeight +
+              (e.clientY - initY)
+            }`
+          );
+          let lastHeight = Number(`${initHeight - (e.clientY - initY)}`);
+          if (firstHeight < minSpacing) {
+            firstHeight = minSpacing;
+            lastHeight = parent.offsetHeight - lineHeight - minSpacing;
+          }
+          if (lastHeight < minSpacing) {
+            firstHeight = parent.offsetHeight - lineHeight - minSpacing;
+            lastHeight = minSpacing;
+          }
+          firstDom.style.height = `${firstHeight}px`;
+          lastDom.style.height = `${lastHeight}px`;
           break;
         }
         default:
@@ -94,9 +122,9 @@ function initDrag(
       }
     };
     // 松开鼠标，解绑事件
-    lineDom.onmouseup = (o: any) => {
+    parent.onmouseup = (o: any) => {
       o.stopPropagation(); // 阻止事件传递到父组件
-      e = null;
+      document.onmousedown = null;
       document.onmousemove = null;
     };
   };
