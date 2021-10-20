@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { Rnd } from "react-rnd";
 import styles from "./index.module.less";
 
+const MaxScreenWidth = window.screen.availWidth;
+const MaxScreenHeight = window.screen.availHeight + 40; // 屏幕高度不包含功能区高度，因此加上40px来达到全屏覆盖
 const MaxWidth = window.innerWidth;
 const MaxHeight = window.innerHeight;
 const DraggableBox = ({
@@ -36,9 +38,10 @@ const DraggableBox = ({
     if (maximize) {
       sizeRef.current = size;
       positionRef.current = position;
+      console.log(MaxScreenWidth, MaxScreenHeight);
       setSize({
-        width: MaxWidth,
-        height: MaxHeight,
+        width: MaxScreenWidth,
+        height: MaxScreenHeight,
       });
       setPosition({
         x: 0,
@@ -93,8 +96,8 @@ const DraggableBox = ({
       disableDragging={disableDragging}
       minWidth={minWidth}
       minHeight={minHeight}
-      maxWidth={MaxWidth}
-      maxHeight={MaxHeight}
+      maxWidth={maximize ? MaxScreenWidth : MaxWidth}
+      maxHeight={maximize ? MaxScreenHeight : MaxHeight}
       {...rest}
     >
       <div className={styles.children}>{children}</div>

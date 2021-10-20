@@ -1,4 +1,6 @@
+import { useEffect, useRef } from "react";
 import { connect } from "dva";
+import { useFullscreen } from "ahooks";
 import DraggableBox from "@/components/DraggableBox";
 import UserLogin from "./components/UserLogin";
 import UserContent from "./components/UserContent";
@@ -13,6 +15,14 @@ function App(props: any) {
     global: { minimize, login, fixed, maximize },
     dispatch,
   } = props;
+  const rootRef = useRef(null);
+  const [_, { setFull, exitFull }]: any = useFullscreen(rootRef);
+
+  useEffect(() => {
+    if (rootRef.current) {
+      maximize ? setFull() : exitFull();
+    }
+  }, [maximize]);
 
   function toggleStatus() {
     dispatch({
@@ -22,7 +32,7 @@ function App(props: any) {
   }
 
   return (
-    <div className={styles.app}>
+    <div className={styles.app} ref={rootRef}>
       {/** 最小化状态，展示小图标 */}
       <div
         className={styles.minimize}
