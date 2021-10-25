@@ -11,8 +11,15 @@ import { Input } from "antd";
 import styles from "./index.module.less";
 
 const { TextArea } = Input;
-const Operation = () => {
+const Operation = (props: any) => {
+  const { socketProps } = props;
+  const { send, sendToRoom } = socketProps;
   const [value, setValue] = useState("");
+
+  function enter() {
+    send(value);
+  }
+
   return (
     <div className={styles.root}>
       <div className={styles.operation}>
@@ -35,10 +42,13 @@ const Operation = () => {
             e.stopPropagation();
             setValue(e.target.value);
           }}
+          onPressEnter={enter}
         />
       </div>
       <div className={styles.enter}>
-        <div className={styles.enterButton}>发送(S)</div>
+        <div className={styles.enterButton} onClick={enter}>
+          发送(S)
+        </div>
       </div>
     </div>
   );

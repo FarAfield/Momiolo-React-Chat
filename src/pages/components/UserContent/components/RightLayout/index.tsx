@@ -20,6 +20,7 @@ const RightLayout = (props: any) => {
     global: { activeKey, maximize, fixed },
     relation: { currentMessage },
     dispatch,
+    socketProps,
   } = props;
   function close() {
     dispatch({
@@ -67,7 +68,10 @@ const RightLayout = (props: any) => {
         </div>
       </div>
       <Black isShow={!Object.keys(currentMessage).length} />
-      <MessageSend isShow={Object.keys(currentMessage).length} />
+      <MessageSend
+        isShow={Object.keys(currentMessage).length}
+        socketProps={socketProps}
+      />
     </div>
   );
 };
@@ -89,7 +93,7 @@ const Black = ({ isShow }: any) => {
  *  消息发送区   hidden设置当前组件隐藏
  */
 const MessageSend = connect(({ relation }: any) => ({ relation }))(
-  ({ relation, isShow }: any) => {
+  ({ relation, isShow, socketProps }: any) => {
     const { currentMessage } = relation;
     return (
       <div className={styles.body} {...show(isShow)}>
@@ -107,7 +111,7 @@ const MessageSend = connect(({ relation }: any) => ({ relation }))(
               </div>
               <div className={styles.line} />
               <div className={styles.bottom}>
-                <Operation />
+                <Operation socketProps={socketProps} />
               </div>
             </div>
           </DragLine>
