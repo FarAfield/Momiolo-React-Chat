@@ -59,11 +59,11 @@ const MessageList = connect(({ global, relation }: any) => ({
   relation,
 }))(({ global, relation, dispatch }: any) => {
   const {
-    userInfo: { openId },
+    userInfo: { userId },
   } = global;
   const { userMessageList, currentMessage } = relation;
   const { data } = useResource(messageList, {
-    params: { openId },
+    params: { userId },
     defaultData: [],
   });
   useEffect(() => {
@@ -97,7 +97,7 @@ const MessageList = connect(({ global, relation }: any) => ({
             key={index}
             style={{
               background:
-                data.openId === currentMessage.openId ? "linear-gradient(to right bottom, rgb(200, 200, 200), rgb(198,198,198))" : "",
+                data.userId === currentMessage.userId ? "linear-gradient(to right bottom, rgb(200, 200, 200), rgb(198,198,198))" : "",
             }}
             onClick={() => updateCurrentMessage(data)}
           >

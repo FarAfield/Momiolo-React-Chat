@@ -38,7 +38,6 @@ const DraggableBox = ({
     if (maximize) {
       sizeRef.current = size;
       positionRef.current = position;
-      console.log(MaxScreenWidth, MaxScreenHeight);
       setSize({
         width: MaxScreenWidth,
         height: MaxScreenHeight,

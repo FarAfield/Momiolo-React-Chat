@@ -145,16 +145,16 @@ const Setting = ({ userInfoList, userInfo, selectUser }: any) => {
         <Radio.Group
           onChange={(e: any) =>
             selectUser(
-              userInfoList.find((i: any) => i.openId === e.target.value)
+              userInfoList.find((i: any) => i.userId === e.target.value)
             )
           }
-          value={userInfo.openId}
+          value={userInfo.userId}
         >
           <Space direction="vertical">
             {userInfoList.map((item: any) => (
               <Radio
-                key={item.openId}
-                value={item.openId}
+                key={item.userId}
+                value={item.userId}
                 disabled={item.online}
               >
                 {item.nickName}
