@@ -8,6 +8,7 @@ import {
   VideoCameraOutlined,
 } from "@ant-design/icons";
 import { Input } from "antd";
+import PubSub from "pubsub-js";
 import styles from "./index.module.less";
 
 const { TextArea } = Input;
@@ -19,6 +20,11 @@ const Operation = (props: any) => {
   function enter() {
     send(value);
   }
+  PubSub.unsubscribe("receive");
+  PubSub.subscribe("receive", (msg: any, data: any) => {
+    console.log(data);
+  });
+
 
   return (
     <div className={styles.root}>

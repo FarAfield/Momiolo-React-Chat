@@ -1,5 +1,5 @@
 import io from "socket.io-client";
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 interface SocketProps {
   disconnect: Function;
@@ -17,7 +17,6 @@ const useSocket = (
 ) => {
   const { receive, receiveByRoom } = options;
   const socket = useRef<SocketProps>();
-  const [latestData, setLatestData] = useState<any>();
 
   useEffect(() => {
     socket.current = io(host, {
@@ -49,7 +48,6 @@ const useSocket = (
        * @param data
        */
       socket.current.on("receiveMsgEvent", (data: any) => {
-        setLatestData(data);
         receive?.(data);
       });
       /**
@@ -60,7 +58,6 @@ const useSocket = (
       socket.current.on(
         "receiveRoomMsgEvent",
         (roomId: string, data: string) => {
-          setLatestData(data);
           receiveByRoom?.(roomId, data);
         }
       );
@@ -115,7 +112,6 @@ const useSocket = (
     leaveRoom,
     send,
     sendToRoom,
-    latestData,
   };
 };
 export { useSocket };

@@ -1,4 +1,5 @@
 import { connect } from "dva";
+import PubSub from "pubsub-js";
 import { useSocket } from "@/utils/socket";
 import LeftLayout from "./components/LeftLayout";
 import CenterLayout from "./components/CenterLayout";
@@ -13,10 +14,10 @@ const UserContent = (props: any) => {
   } = props;
   const socketProps = useSocket(userId, { receive, receiveByRoom });
   function receive(data: any) {
-    console.log(data, "接收数据");
+    PubSub.publish("receive", data);
   }
   function receiveByRoom(roomId: string, data: any) {
-    console.log(roomId, data, "接收数据");
+    PubSub.publish("receiveByRoom", { roomId, data });
   }
   return (
     <div className={styles.root}>
