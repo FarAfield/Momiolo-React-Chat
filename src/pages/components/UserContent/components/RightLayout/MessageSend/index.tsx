@@ -6,7 +6,7 @@ import Operation from "../Operation";
 import styles from "./index.module.less";
 
 const MessageSend = (props: any) => {
-  const { relation, socketProps } = props;
+  const { relation } = props;
   const { currentMessage } = relation;
   return (
     <div className={styles.body}>
@@ -24,7 +24,7 @@ const MessageSend = (props: any) => {
             </div>
             <div className={styles.line} />
             <div className={styles.bottom}>
-              <Operation socketProps={socketProps} />
+              <Operation {...props} />
             </div>
           </div>
         </DragLine>
@@ -32,4 +32,4 @@ const MessageSend = (props: any) => {
     </div>
   );
 };
-export default connect(({ relation }: any) => ({ relation }))(MessageSend);
+export default connect(({ relation, global }: any) => ({ relation, global }))(MessageSend);

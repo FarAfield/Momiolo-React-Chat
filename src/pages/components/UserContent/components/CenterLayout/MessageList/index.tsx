@@ -4,12 +4,18 @@ import { useVirtualList } from "ahooks";
 import { createService, useResource } from "@/utils/requestUtils";
 import styles from "./index.module.less";
 
-const messageList = createService("/socket/findUserList");
+function createRoomId(sourceId: any, targetId: any) {
+  const list = [sourceId, targetId].sort((a: any, b: any) => a - b);
+  return list.join("");
+}
+
+const messageList = createService("/socket/findOnlineUserList");
 const MessageList = (props: any) => {
-  const { global, relation, dispatch } = props;
+  const { global, relation, dispatch, socketProps } = props;
   const {
     userInfo: { userId },
   } = global;
+  const { joinRoom } = socketProps;
   const { userMessageList, currentMessage } = relation;
   const { data } = useResource(messageList, {
     params: { userId },
@@ -20,6 +26,9 @@ const MessageList = (props: any) => {
       type: "relation/update",
       userMessageList: data,
     });
+    if (data.length) {
+      data.forEach((item: any) => joinRoom(createRoomId(userId, item.userId)));
+    }
   }, [data]);
   function updateCurrentMessage(v: any) {
     dispatch({
@@ -57,9 +66,9 @@ const MessageList = (props: any) => {
             </div>
             <div className={styles.message}>
               <div>{data.nickName}</div>
-              <div>{data.lastMessage}</div>
+              <div>{data.latestMessage}</div>
             </div>
-            <div className={styles.date}>{data.lastDate}</div>
+            <div className={styles.date}>{data.latestTime}</div>
           </div>
         ))}
       </div>

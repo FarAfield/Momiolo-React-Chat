@@ -1,6 +1,8 @@
 import io from "socket.io-client";
 import { useEffect, useRef } from "react";
 
+// @ts-ignore
+const host = import.meta.env.DEV ? "localhost:9098" : "";
 interface SocketProps {
   disconnect: Function;
   on: Function;
@@ -10,11 +12,7 @@ interface OptionsProps {
   receive?: Function;
   receiveByRoom?: Function;
 }
-const useSocket = (
-  userId: string,
-  options: OptionsProps,
-  host: string = "localhost:9098"
-) => {
+const useSocket = (userId: string, options: OptionsProps) => {
   const { receive, receiveByRoom } = options;
   const socket = useRef<SocketProps>();
 
@@ -57,7 +55,7 @@ const useSocket = (
        */
       socket.current.on(
         "receiveRoomMsgEvent",
-        (roomId: string, data: string) => {
+        (roomId: string, data: any) => {
           receiveByRoom?.(roomId, data);
         }
       );
