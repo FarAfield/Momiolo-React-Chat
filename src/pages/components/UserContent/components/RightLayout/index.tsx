@@ -3,18 +3,13 @@ import {
   CloseOutlined,
   BorderOutlined,
   PushpinOutlined,
-  EllipsisOutlined,
   SelectOutlined,
 } from "@ant-design/icons";
 import { connect } from "dva";
 import wechatBackground from "@/assets/wechatBackground.svg";
-import DragLine from "../../../../../components/DragLine";
-import Content from "./Content";
-import Operation from "./Operation";
+import MessageSend from "./MessageSend";
 import styles from "./index.module.less";
-function show(status = false) {
-  return { style: { display: status ? "flex" : "none" } };
-}
+
 const RightLayout = (props: any) => {
   const {
     global: { activeKey, maximize, fixed },
@@ -46,6 +41,13 @@ const RightLayout = (props: any) => {
       fixed: !fixed,
     });
   }
+  // 扩展 todo
+  function renderContent() {
+    if (activeKey === "message" && Object.keys(currentMessage).length) {
+      return <MessageSend socketProps={socketProps} />;
+    }
+    return <Black />;
+  }
   return (
     <div className={styles.root}>
       <div className={styles.header}>
@@ -67,11 +69,7 @@ const RightLayout = (props: any) => {
           </div>
         </div>
       </div>
-      <Black isShow={!Object.keys(currentMessage).length} />
-      <MessageSend
-        isShow={Object.keys(currentMessage).length}
-        socketProps={socketProps}
-      />
+      {renderContent()}
     </div>
   );
 };
@@ -82,41 +80,10 @@ export default connect(({ global, relation }: any) => ({ global, relation }))(
 /**
  *  空白页
  */
-const Black = ({ isShow }: any) => {
+const Black = () => {
   return (
-    <div className={styles.black} {...show(isShow)}>
+    <div className={styles.black}>
       <img src={wechatBackground} alt="" />
     </div>
   );
 };
-/**
- *  消息发送区   hidden设置当前组件隐藏
- */
-const MessageSend = connect(({ relation }: any) => ({ relation }))(
-  ({ relation, isShow, socketProps }: any) => {
-    const { currentMessage } = relation;
-    return (
-      <div className={styles.body} {...show(isShow)}>
-        <div className={styles.link}>
-          <div>{currentMessage.nickName}</div>
-          <div>
-            <EllipsisOutlined />
-          </div>
-        </div>
-        <div className={styles.send}>
-          <DragLine direction="horizontal">
-            <div className={styles.content}>
-              <div className={styles.top}>
-                <Content />
-              </div>
-              <div className={styles.line} />
-              <div className={styles.bottom}>
-                <Operation socketProps={socketProps} />
-              </div>
-            </div>
-          </DragLine>
-        </div>
-      </div>
-    );
-  }
-);
