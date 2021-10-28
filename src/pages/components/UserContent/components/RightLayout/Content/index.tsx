@@ -1,4 +1,5 @@
 import { Avatar } from "antd";
+import { useEffect } from 'react';
 import styles from "./index.module.less";
 
 const Content = (props: any) => {
@@ -14,8 +15,15 @@ const Content = (props: any) => {
   const target = userMessageList.find(
     (i: any) => i.userId === currentMessage.userId
   );
+  useEffect(() => {
+    // 滚动到最新的消息
+    const target: any = document.getElementById('chat-box');
+    if (target) {
+      target.scrollTop = target.scrollHeight;
+    }
+  }, [userMessageList]);
   return (
-    <div className={styles.root} style={{ overflow: "overlay" }}>
+    <div id="chat-box" className={styles.root} style={{ overflow: "overlay" }}>
       {messageList?.map((item: any, index: number) => {
         // 左边
         if (item.targetUserId === String(userId)) {
