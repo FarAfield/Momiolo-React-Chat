@@ -20,7 +20,7 @@ const MessageSend = (props: any) => {
         <DragLine direction="horizontal">
           <div className={styles.content}>
             <div className={styles.top}>
-              <Content />
+              <Content {...props} />
             </div>
             <div className={styles.line} />
             <div className={styles.bottom}>
@@ -32,4 +32,6 @@ const MessageSend = (props: any) => {
     </div>
   );
 };
-export default connect(({ relation, global }: any) => ({ relation, global }))(MessageSend);
+export default connect(({ relation, global }: any) => ({ relation, global }))(
+  MessageSend
+);

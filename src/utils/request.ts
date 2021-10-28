@@ -6,7 +6,7 @@ const errorHandler = (error: any) => {
 const request = extend({
   errorHandler, // 默认错误处理
   prefix: "/chat",
-  timeout: 10000, // 30s
+  timeout: 30000, // 30s
 });
 request.interceptors.request.use((url: string, options: any) => {
   return { url, options };

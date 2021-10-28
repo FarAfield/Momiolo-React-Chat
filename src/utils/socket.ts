@@ -53,12 +53,9 @@ const useSocket = (userId: string, options: OptionsProps) => {
        * @param roomId
        * @param data
        */
-      socket.current.on(
-        "receiveRoomMsgEvent",
-        (roomId: string, data: any) => {
-          receiveByRoom?.(roomId, data);
-        }
-      );
+      socket.current.on("receiveRoomMsgEvent", (roomId: string, data: any) => {
+        receiveByRoom?.(roomId, data);
+      });
     }
   });
 
@@ -88,19 +85,22 @@ const useSocket = (userId: string, options: OptionsProps) => {
   /**
    * 消息群发
    * @param msgContent
+   * @param targetUserId
    */
-  function send(msgContent: string) {
-    socket.current?.emit("sendMsgEvent", { msgContent });
+  function send({ msgContent, targetUserId }: any) {
+    socket.current?.emit("sendMsgEvent", { msgContent, targetUserId });
   }
 
   /**
    * 指定房间发送消息
    * @param roomId
    * @param msgContent
+   * @param targetUserId
    */
-  function sendToRoom(roomId: string, msgContent: string) {
+  function sendToRoom(roomId: string, { msgContent, targetUserId }: any) {
     socket.current?.emit("sendRoomMsgEvent", roomId, {
       msgContent,
+      targetUserId,
     });
   }
 
