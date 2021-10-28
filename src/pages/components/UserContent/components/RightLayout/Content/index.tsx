@@ -15,7 +15,7 @@ const Content = (props: any) => {
     (i: any) => i.userId === currentMessage.userId
   );
   return (
-    <div className={styles.root}>
+    <div className={styles.root} style={{ overflow: "overlay" }}>
       {messageList?.map((item: any, index: number) => {
         // 左边
         if (item.targetUserId === String(userId)) {
