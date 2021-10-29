@@ -1,8 +1,13 @@
 import io from "socket.io-client";
 import { useEffect, useRef } from "react";
 
+/**
+ * socket配置为页面实际域名，然后统一走代理
+ */
 // @ts-ignore
-const host = import.meta.env.DEV ? "localhost:9098" : "https://www.momiolo.com:9000";
+const host = import.meta.env.DEV
+  ? "localhost:9098"
+  : "https://www.momiolo.com:9000";
 interface SocketProps {
   disconnect: Function;
   on: Function;
