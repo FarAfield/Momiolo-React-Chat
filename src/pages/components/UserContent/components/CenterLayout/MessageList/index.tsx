@@ -31,9 +31,16 @@ const MessageList = (props: any) => {
     }
   }, [data]);
   function updateCurrentMessage(v: any) {
+    const index = userMessageList.findIndex((i: any) => i.userId === v.userId);
+    const cloneList = [...userMessageList];
+    cloneList[index] = {
+      ...cloneList[index],
+      count: 0,
+    };
     dispatch({
       type: "relation/update",
       currentMessage: v,
+      userMessageList: cloneList,
     });
   }
   const { list, containerProps, wrapperProps } = useVirtualList(
@@ -63,6 +70,9 @@ const MessageList = (props: any) => {
           >
             <div className={styles.avatar}>
               <img src={data.avatarUrl} alt="" />
+              {data.count ? (
+                <div className={styles.badge}>{data.count}</div>
+              ) : null}
             </div>
             <div className={styles.message}>
               <div>{data.nickName}</div>

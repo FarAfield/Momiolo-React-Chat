@@ -6,10 +6,10 @@ import Operation from "../Operation";
 import styles from "./index.module.less";
 
 const MessageSend = (props: any) => {
-  const { relation } = props;
+  const { relation, style } = props;
   const { currentMessage } = relation;
   return (
-    <div className={styles.body}>
+    <div className={styles.body} style={style}>
       <div className={styles.link}>
         <div>{currentMessage.nickName}</div>
         <div>

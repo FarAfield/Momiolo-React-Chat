@@ -43,10 +43,24 @@ const RightLayout = (props: any) => {
   }
   // 扩展 todo
   function renderContent() {
-    if (activeKey === "message" && Object.keys(currentMessage).length) {
-      return <MessageSend socketProps={socketProps} />;
-    }
-    return <Black />;
+    const show = (isShow: boolean) => {
+      return { style: { display: isShow ? "flex" : "none" } };
+    };
+    return (
+      <>
+        <MessageSend
+          socketProps={socketProps}
+          {...show(
+            activeKey === "message" && !!Object.keys(currentMessage).length
+          )}
+        />
+        <Black
+          {...show(
+            activeKey !== "message" || !Object.keys(currentMessage).length
+          )}
+        />
+      </>
+    );
   }
   return (
     <div className={styles.root}>
@@ -80,9 +94,9 @@ export default connect(({ global, relation }: any) => ({ global, relation }))(
 /**
  *  空白页
  */
-const Black = () => {
+const Black = ({ style }: any) => {
   return (
-    <div className={styles.black}>
+    <div className={styles.black} style={style}>
       <img src={wechatBackground} alt="" />
     </div>
   );

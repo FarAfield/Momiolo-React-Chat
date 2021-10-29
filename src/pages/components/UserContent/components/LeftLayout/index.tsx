@@ -1,9 +1,11 @@
+import { useState, useRef } from "react";
 import {
   MessageOutlined,
   UserOutlined,
   HeartOutlined,
   FolderOutlined,
 } from "@ant-design/icons";
+import { useClickAway } from "ahooks";
 import { connect } from "dva";
 import styles from "./index.module.less";
 
@@ -19,6 +21,17 @@ const LeftLayout = (props: any) => {
     dispatch,
   } = props;
   const { avatarUrl } = userInfo;
+  // 展示个人信息
+  const [show, setShow] = useState(false);
+  const showRef = useRef(null);
+  const clickRef = useRef(false);
+  useClickAway(() => {
+    if (clickRef.current) {
+      clickRef.current = false;
+    } else {
+      setShow(false);
+    }
+  }, showRef);
   function onChange(v: string) {
     dispatch({
       type: "global/update",
@@ -28,7 +41,13 @@ const LeftLayout = (props: any) => {
   return (
     <div className={styles.root}>
       <div className={styles.top}>
-        <div className={styles.avatar}>
+        <div
+          className={styles.avatar}
+          onClick={() => {
+            setShow(true);
+            clickRef.current = true;
+          }}
+        >
           <img src={avatarUrl} alt="" />
         </div>
         {OPTIONS.map((item: any) => (
@@ -46,6 +65,11 @@ const LeftLayout = (props: any) => {
           </div>
         ))}
       </div>
+      <div
+        ref={showRef}
+        className={styles.float}
+        style={{ display: show ? "flex" : "none" }}
+      ></div>
     </div>
   );
 };

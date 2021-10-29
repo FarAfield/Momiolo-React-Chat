@@ -19,7 +19,8 @@ function createRoomId(sourceId: any, targetId: any) {
 function computedMessageList(
   userMessageList: any,
   newMessage: any,
-  userId: string
+  userId: string,
+  currentUserId: number
 ) {
   const cloneList = [...userMessageList];
   // 当前是发送方
@@ -42,6 +43,11 @@ function computedMessageList(
     messageList: (cloneList[index].messageList || []).concat(newMessage),
     latestMessage: newMessage.msgContent,
     latestTime: moment().format("HH:mm"),
+    // 非当前目标，记录数量
+    count:
+      cloneList[index].userId === currentUserId
+        ? 0
+        : (cloneList[index].count || 0) + 1,
   };
   return cloneList;
 }
@@ -79,7 +85,12 @@ const Operation = (props: any) => {
   }
   PubSub.unsubscribe("receiveByRoom");
   PubSub.subscribe("receiveByRoom", (msg: any, { roomId, data }: any) => {
-    const result = computedMessageList(userMessageList, data, userId);
+    const result = computedMessageList(
+      userMessageList,
+      data,
+      userId,
+      currentMessage.userId
+    );
     dispatch({
       type: "relation/update",
       userMessageList: result,
