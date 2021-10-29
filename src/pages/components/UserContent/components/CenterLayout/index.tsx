@@ -44,7 +44,7 @@ const CenterLayout = (props: any) => {
           <PlusOutlined style={{ color: "rgb(100,100,100)" }} />
         </Button>
       </div>
-      <MessageList socketProps={socketProps}/>
+      <MessageList socketProps={socketProps} />
     </div>
   );
 };

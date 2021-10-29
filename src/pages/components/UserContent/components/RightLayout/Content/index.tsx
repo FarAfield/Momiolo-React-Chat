@@ -1,5 +1,5 @@
 import { Avatar } from "antd";
-import { useEffect } from 'react';
+import { useEffect } from "react";
 import styles from "./index.module.less";
 
 const Content = (props: any) => {
@@ -17,7 +17,7 @@ const Content = (props: any) => {
   );
   useEffect(() => {
     // 滚动到最新的消息
-    const target: any = document.getElementById('chat-box');
+    const target: any = document.getElementById("chat-box");
     if (target) {
       target.scrollTop = target.scrollHeight;
     }

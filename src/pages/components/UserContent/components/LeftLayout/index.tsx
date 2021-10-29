@@ -69,7 +69,17 @@ const LeftLayout = (props: any) => {
         ref={showRef}
         className={styles.float}
         style={{ display: show ? "flex" : "none" }}
-      ></div>
+      >
+        <div className={styles.floatTop}>
+          <div className={styles.floatNickName}>
+            <div>{userInfo.nickName}</div>
+            <div>登陆平台：momiolo</div>
+          </div>
+          <div className={styles.floatAvatar}>
+            <img src={userInfo.avatarUrl} alt="" />
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

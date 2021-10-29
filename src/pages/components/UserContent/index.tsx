@@ -22,7 +22,7 @@ const UserContent = (props: any) => {
   return (
     <div className={styles.root}>
       <LeftLayout />
-      <CenterLayout socketProps={socketProps}/>
+      <CenterLayout socketProps={socketProps} />
       <RightLayout socketProps={socketProps} />
     </div>
   );
