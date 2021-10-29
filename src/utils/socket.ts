@@ -2,7 +2,7 @@ import io from "socket.io-client";
 import { useEffect, useRef } from "react";
 
 // @ts-ignore
-const host = import.meta.env.DEV ? "localhost:9098" : "";
+const host = import.meta.env.DEV ? "localhost:9098" : "https://www.momiolo.com:9000";
 interface SocketProps {
   disconnect: Function;
   on: Function;
