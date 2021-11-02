@@ -54,6 +54,7 @@ const MessageList = (props: any) => {
     <div
       {...containerProps}
       style={{ height: "calc(100% - 56px)", overflow: "overlay" }}
+      onMouseDown={e => e.stopPropagation()}
     >
       <div {...wrapperProps}>
         {list.map(({ index, data }) => (

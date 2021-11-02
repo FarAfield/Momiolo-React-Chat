@@ -9,7 +9,7 @@ const MessageSend = (props: any) => {
   const { relation, style } = props;
   const { currentMessage } = relation;
   return (
-    <div className={styles.body} style={style}>
+    <div className={styles.body} style={style} onMouseDown={e => e.stopPropagation()}>
       <div className={styles.link}>
         <div>{currentMessage.nickName}</div>
         <div>
