@@ -6,15 +6,11 @@ const Content = (props: any) => {
   const { relation, global } = props;
   const { userMessageList, currentMessage } = relation;
   const {
-    userInfo: { userId },
+    userInfo: { userId, avatarUrl },
   } = global;
   const messageList = userMessageList.find(
     (i: any) => i.userId === currentMessage.userId
   )?.messageList;
-  const source = currentMessage;
-  const target = userMessageList.find(
-    (i: any) => i.userId === currentMessage.userId
-  );
   useEffect(() => {
     // 滚动到最新的消息
     const target: any = document.getElementById("chat-box");
@@ -30,7 +26,7 @@ const Content = (props: any) => {
           return (
             <div key={index} className={styles.leftMessage}>
               <div className={styles.avatar}>
-                <Avatar shape="square" size="large" src={target.avatarUrl} />
+                <Avatar shape="square" size="large" src={currentMessage.avatarUrl} />
               </div>
               <div className={styles.text}>{item.msgContent}</div>
             </div>
@@ -40,7 +36,7 @@ const Content = (props: any) => {
             <div key={index} className={styles.rightMessage}>
               <div className={styles.text}>{item.msgContent}</div>
               <div className={styles.avatar}>
-                <Avatar shape="square" size="large" src={source.avatarUrl} />
+                <Avatar shape="square" size="large" src={avatarUrl} />
               </div>
             </div>
           );
