@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
  */
 // @ts-ignore
 const host = import.meta.env.DEV
-  ? "localhost:9098"
+  ? "https://www.momiolo.com:9000"
   : "https://www.momiolo.com:9000";
 interface SocketProps {
   disconnect: Function;
