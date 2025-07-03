@@ -6,7 +6,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { connect } from "dva";
-import QRCode from "qrcode.react";
+import { QRCodeSVG as QRCode } from "qrcode.react";
 import { useResource, createService } from "@/utils/requestUtils";
 import styles from "./index.module.less";
 

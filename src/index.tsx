@@ -1,12 +1,11 @@
-import React from "react";
-import dva from "dva";
-import App from "./pages/App";
-import global from "./models/global";
-import relation from "./models/relation";
+import { StrictMode } from "react";
+import Main from "./main";
+import { createRoot } from "react-dom/client";
 import "./index.less";
 
-const app = dva();
-app.model(global);
-app.model(relation);
-app.router(() => <App />);
-app.start("#root");
+const root = createRoot(document.getElementById("root")!);
+root.render(
+  <StrictMode>
+    <Main></Main>
+  </StrictMode>
+);

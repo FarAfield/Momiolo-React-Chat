@@ -16,11 +16,11 @@ function App(props: any) {
     dispatch,
   } = props;
   const rootRef = useRef(null);
-  const [_, { setFull, exitFull }]: any = useFullscreen(rootRef);
+  const [_, { enterFullscreen, exitFullscreen }]: any = useFullscreen(rootRef);
 
   useEffect(() => {
     if (rootRef.current) {
-      maximize ? setFull() : exitFull();
+      maximize ? enterFullscreen() : exitFullscreen();
     }
   }, [maximize]);
 
